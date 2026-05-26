@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<BookService>();
 builder.Services.AddSingleton<NetworkService>();
+builder.Services.AddSingleton<CityService>();
 
 var app = builder.Build();
 
