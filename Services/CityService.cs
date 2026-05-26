@@ -2,6 +2,7 @@
 
 public class CityService
 {
+    // City -> list of (neighbor, cost) pairs:
     private readonly Dictionary<string, List<(string City, int Cost)>> _map = new()
     {
         { "Alice", new() { ("Bob", 4), ("Clara", 3) } },
@@ -21,8 +22,10 @@ public class CityService
         var costs = _map.Keys.ToDictionary(k => k, _ => int.MaxValue);
         costs[from] = 0;
 
+        // To be able to reconstruct the path at the end:
         var previous = new Dictionary<string, string?>();
 
+        // PriorityQueue<item, priority> - lowest priority number comes out first
         var queue = new PriorityQueue<string, int>();
         queue.Enqueue(from, 0);
 
