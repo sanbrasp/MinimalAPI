@@ -12,7 +12,7 @@ public class NetworkService
         { "Frank", new List<string> { "Eve" } }
     };
 
-    public bool IsConnected(string from, string to)
+    public bool IsConnected(string from, string to) // BFS
     {
         if (!_network.ContainsKey(from) || !_network.ContainsKey(to)) 
             return false;
@@ -40,5 +40,37 @@ public class NetworkService
             }
         }
         return false;
+    }
+
+    public List<string>? FindPath(string from, string to) // DFS
+    {
+        if (!_network.ContainsKey(from) || !_network.ContainsKey(to))
+            return null;
+        
+        var visited = new HashSet<string>();
+        var path = new List<string>();
+
+        bool Dfs(string current)
+        {
+            visited.Add(current);
+            path.Add(current);
+            
+            if (current == to)
+                return true;
+
+            foreach (var neighbor in _network[current])
+            {
+                if (!visited.Contains(neighbor))
+                {
+                    if (Dfs(neighbor))
+                        return true;
+                }
+            }
+            
+            // Dead end - backtrack:
+            path.RemoveAt(path.Count - 1);
+            return false;
+        }
+        return Dfs(from) ? path : null;
     }
 }
