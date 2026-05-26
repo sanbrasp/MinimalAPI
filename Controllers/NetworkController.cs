@@ -22,4 +22,15 @@ public class NetworkController : ControllerBase
         var result = _networkService.IsConnected(from, to);
         return Ok(new { from, to, connected = result });
     }
+
+    [HttpGet("path")]
+    public IActionResult FindPath([FromQuery] string from, [FromQuery] string to)
+    {
+        var path = _networkService.FindPath(from, to);
+
+        if (path is null)
+            return NotFound(new { message = $"No path found from {from} to {to}" });
+        
+        return Ok(new { from, to, path });
+    }
 }
